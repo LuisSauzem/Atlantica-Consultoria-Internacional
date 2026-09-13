@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Editar conteúdo — Atlântica</title>
+  <style>
+    .photo-preview { position: relative; margin: 12px 0; width: 100%; max-width: 735px; height: 430px; overflow: hidden; border-radius: 16px; background: #01113d; border: 1px solid rgba(252,163,17,.2); font-family: Arial, sans-serif; }
+    .photo-preview.mobile { max-width: 342px; height: 380px; }
+    .photo-preview img { width: 100%; height: 100%; object-fit: cover; object-position: center 20%; }
+    .photo-preview::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 45%, rgba(1,17,61,.92) 100%); }
+    .photo-preview figcaption { position: absolute; z-index: 1; left: 24px; right: 24px; bottom: 20px; color: #efefef; font-size: 14px; }
+    .photo-preview small { display: block; margin-bottom: 4px; color: #fca311; font-size: 10px; text-transform: uppercase; letter-spacing: 2px; }
+    .photo-preview .caption-extra { position: absolute; right: 0; bottom: 0; color: #b1bfcc; font-size: 12px; }
+    .photo-preview.mobile .caption-extra { display: none; }
+    @media (max-width: 639px) { .photo-preview .caption-extra { display: none; } }
+    @media (max-width: 600px) { .photo-preview { height: 380px; } }
+  </style>
+</head>
+<body>
+  <h1>Editar conteúdo</h1>
+  <p>Formulário básico para testar a gravação. A interface final será desenvolvida pela equipe.</p>
+  <button id="reload" type="button">Recarregar dados</button>
+  <p id="status" role="status">Carregando...</p>
+  <form id="editor" autocomplete="off">
+    <fieldset id="fields" disabled>
+      <legend>Conteúdos editáveis</legend>
+      <div id="names"></div>
+      <p><label>Telefone/WhatsApp <input name="phone" type="tel" required maxlength="30"></label></p>
+      <p><label>Foto de Nossas Diretorias <input name="photo" type="file" accept="image/jpeg,image/png,image/webp"></label></p>
+      <p>JPEG, PNG ou WebP, até 2 MB. Sem escolher uma foto, a imagem atual será mantida.</p>
+      <p id="photo-status" role="status">Foto atual do site.</p>
+      <button id="discard-photo" type="button" hidden>Descartar foto escolhida</button>
+      <p>
+        <label>Prévia do recorte
+          <select id="preview-size"><option value="desktop">Computador</option><option value="mobile">Celular</option></select>
+        </label>
+      </p>
+      <figure class="photo-preview" id="photo-frame">
+        <img id="photo-preview" src="/diretoria-original.jpeg" alt="Prévia da foto de Nossas Diretorias">
+        <figcaption><small>Liderança Atlântica</small>Estratégia construída por pessoas<span class="caption-extra">Nossa diretoria</span></figcaption>
+      </figure>
+      <p>A prévia usa o mesmo recorte e degradê do site. O enquadramento varia com a largura da tela. A foto escolhida só será publicada ao salvar.</p>
+      <p><label>Senha de edição <input id="editing-password" name="password-Atlantica" type="password" required minlength="8" autocomplete="new-password" autocapitalize="none" spellcheck="false" data-lpignore="true" data-1p-ignore></label></p>
+      <button type="submit">Salvar alterações</button>
+    </fieldset>
+  </form>
+  <p><a href="/" target="_blank" rel="noopener">Abrir site</a></p>
+  <script type="module" src="/admin.js"></script>
+</body>
+</html>

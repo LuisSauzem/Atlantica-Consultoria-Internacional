@@ -17,10 +17,10 @@ Marque as decisões confirmadas durante a conversa com o cliente.
 
 ## 3. Serviços
 
-- [ ] **Exportação:** análise de viabilidade, estudo de mercado e prospecção de compradores.
-- [ ] **Tradução:** serviços de tradução, documentos e reuniões de negócios.
-- [ ] **Importação:** benefícios fiscais, consultoria e prospecção de fornecedores.
-- [ ] **Paradiplomacia:** serviços paradiplomáticos, investimentos estrangeiros e parcerias.
+- [ ] *Exportação:* análise de viabilidade, estudo de mercado e prospecção de compradores.
+- [ ] *Tradução:* serviços de tradução, documentos e reuniões de negócios.
+- [ ] *Importação:* benefícios fiscais, consultoria e prospecção de fornecedores.
+- [ ] *Paradiplomacia:* serviços paradiplomáticos, investimentos estrangeiros e parcerias.
 - [ ] A ordem, os resumos e os três destaques de cada área estão aprovados?
       Pode adicionar mais subtópicos nos blocos.
 

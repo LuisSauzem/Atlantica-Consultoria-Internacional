@@ -140,16 +140,6 @@ body {
   border-color: rgba(252,163,17,0.28);
 }
 
-/* ── Stat numbers ── */
-.stat-num {
-  font-family: 'Playfair Display', serif;
-  font-weight: 700;
-  background: linear-gradient(135deg, #fca311, #ffbe4f);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
 /* ── Buttons ── */
 .btn-primary {
   background: linear-gradient(135deg, #fca311 0%, #ffbe4f 50%, #fca311 100%);

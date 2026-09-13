@@ -10,11 +10,13 @@ export default defineConfig(({ mode }) => {
 
   return {
     base: process.env.FIGMA_PUBLIC_URL ? `${process.env.FIGMA_PUBLIC_URL}/` : '/',
+    
     build: {
       sourcemap: emitSourcemaps ? 'inline' : false,
       minify: !emitSourcemaps,
     },
     plugins: [
+      adminRoute(),
       react(),
       tailwindcss(),
       figmaErrorOverlayReplay(),
@@ -23,13 +25,15 @@ export default defineConfig(({ mode }) => {
     ],
     resolve: {
       alias: {
-        '@': path.resolve(__dirname, './src'),
+        '@': path.resolve(import.meta.dirname, './src'),
+        
       },
     },
     server: {
       host: '0.0.0.0',
       port: parseInt(process.env.PORT || '8443'),
-      strictPort: true,
+      
+      strictPort: false,
       watch: { ignored: ['**/.figma/**'] },
     },
     preview: {
@@ -38,6 +42,21 @@ export default defineConfig(({ mode }) => {
     },
   }
 })
+
+// O Vite local não aplica os rewrites do vercel.json.
+function adminRoute(): Plugin {
+  const rewrite = (req: { url?: string }, _res: unknown, next: () => void) => {
+    if (req.url && /^\/admin\/?(?:\?|$)/.test(req.url)) {
+      req.url = req.url.replace(/^\/admin\/?(?=\?|$)/, '/admin.html');
+    }
+    next();
+  };
+  return {
+    name: 'admin-route',
+    configureServer(server) { server.middlewares.use(rewrite); },
+    configurePreviewServer(server) { server.middlewares.use(rewrite); },
+  };
+}
 
 type FigmaSiteConfiguration = {
   title?: string

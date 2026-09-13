@@ -1,9 +1,10 @@
 import { useState, useEffect, useRef } from "react";
-import equipeDiretoria from "./image/Equipe_Diretoria.jpeg";
+const equipeDiretoria = '/diretoria-original.jpeg';
 import logoBranco from "./image/Logo Branco com Frase.png";
 import magaOficial from "./image/magá SEM FUNDO(3).png";
 import mapaMundi from "./image/mapa mundi com navio.png";
-
+import VLibras from './VLibras'
+import { DEFAULT_CONTENT, initials, validateContent } from '../shared/content.js';
 /* ── Brand tokens ── */
 const B = {
   navy: "#01113d",
@@ -28,25 +29,6 @@ function useReveal(threshold = 0.14) {
     return () => obs.disconnect();
   }, []);
   return { ref, visible };
-}
-
-/* ── Animated counter ── */
-function Counter({ target, suffix = "" }) {
-  const [val, setVal] = useState(0);
-  const { ref, visible } = useReveal(0.5);
-  useEffect(() => {
-    if (!visible) return;
-    const steps = 1800 / 16;
-    let cur = 0;
-    const inc = target / steps;
-    const t = setInterval(() => {
-      cur = Math.min(cur + inc, target);
-      setVal(Math.floor(cur));
-      if (cur >= target) clearInterval(t);
-    }, 16);
-    return () => clearInterval(t);
-  }, [visible, target]);
-  return <span ref={ref} className="stat-num">{val}{suffix}</span>;
 }
 
 /* ══════════════════════════════
@@ -106,7 +88,7 @@ function Nav() {
         </a>
 
         {/* Mobile burger */}
-        <button className="md:hidden p-2" style={{ color: B.silver }} onClick={() => setOpen(v => !v)}>
+        <button className="md:hidden p-2" style={{ color: B.silver }} onClick={() => setOpen(v => !v)} aria-label="menu hambúrguer">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             {open
               ? <><path d="M18 6L6 18" /><path d="M6 6l12 12" /></>
@@ -184,9 +166,8 @@ function Hero() {
             className="text-base leading-relaxed mb-10 max-w-lg"
             style={{ color: B.silver, animation: "fade-up 0.6s 0.2s ease both" }}
           >
-            Há 11 anos, a Atlântica conecta empresas e famílias brasileiras ao mercado global com estratégia, segurança jurídica e uma rede exclusiva de parceiros em mais de 40 países.
+            Desde 2015, a Atlântica auxilia empresas brasileiras em seu processo de internacionalização, promovendo a inserção estratégica e assertiva no mercado global.
           </p>
-
           <div className="flex flex-wrap gap-4" style={{ animation: "fade-up 0.6s 0.3s ease both" }}>
             <a href="#contato" className="btn-primary inline-flex items-center gap-2 px-8 py-3.5 rounded text-sm">
               Agendar Consulta Gratuita
@@ -199,25 +180,6 @@ function Hero() {
             </a>
           </div>
 
-          {/* Stats row */}
-          <div
-            className="flex flex-wrap gap-8 mt-16 pt-8"
-            style={{ borderTop: "1px solid rgba(221,229,242,0.1)", animation: "fade-up 0.6s 0.45s ease both" }}
-          >
-            {[
-              { val: 11, suf: "", label: "Anos de existência" },
-              { val: 40, suf: "+", label: "Países atendidos" },
-              { val: 320, suf: "+", label: "Clientes atendidos" },
-              { val: 98, suf: "%", label: "Taxa de satisfação" },
-            ].map(s => (
-              <div key={s.label} className="flex flex-col">
-                <span className="text-[2.2rem] leading-none font-bold">
-                  <Counter target={s.val} suffix={s.suf} />
-                </span>
-                <span className="text-xs mt-0.5" style={{ color: B.silver }}>{s.label}</span>
-              </div>
-            ))}
-          </div>
         </div>
       </div>
 
@@ -250,8 +212,8 @@ const SERVICES = [
   {
     icon: <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><circle cx="12" cy="12" r="10" /><path d="M2 12h20" /><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10A15.3 15.3 0 0 1 12 2z" /><path d="m15 8 3-3m0 0h-3m3 0v3" /></svg>,
     title: "Exportação",
-    desc: "Preparamos empresas para acessar mercados internacionais com estratégia e segurança. Analisamos oportunidades e conectamos produtos a potenciais compradores no exterior.",
-    items: ["Análise de viabilidade", "Estudo de mercado", "Prospecção internacional de compradores"],
+    desc: "Ajudamos empresas a ingressar no mercado internacional de forma estratégica e segura. Analisamos a documentação necessária e conectamos negócios às melhores oportunidades no mercado global.",
+    items: ["Análise de viabilidade", "Estudos de mercado e logístico-burocrático", "Prospecção internacional de compradores"],
   },
   {
     icon: <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M4 5h7M7.5 3v2c0 4-2 7-5 9" /><path d="M5 10c1.5 2 3 3.5 5 4.5" /><path d="m13 21 4-10 4 10M14.5 17h5" /></svg>,
@@ -289,7 +251,7 @@ function Services() {
             Nossos <span className="orange-text">Serviços</span>
           </h2>
           <p className="mt-4 max-w-lg mx-auto text-sm leading-relaxed" style={{ color: B.silver }}>
-            Soluções para empresas e instituições que desejam importar, exportar e construir relações internacionais.
+            Conectamos empresas e instituições ao mercado internacional por meio de soluções em importação, exportação, paradiplomacia, tradução e internacionalização.
           </p>
         </div>
 
@@ -426,7 +388,7 @@ function Cases() {
               Cases de <span className="orange-text">Sucesso</span>
             </h2>
             <p className="text-sm max-w-xs" style={{ color: B.silver }}>
-              Projetos reais de exportação e importação conduzidos com análise, segurança e resultados mensuráveis.
+              Projetos reais de exportação e importação conduzidos com análise, segurança e estratégia.
             </p>
           </div>
         </div>
@@ -546,15 +508,14 @@ function CeoCard() {
             </div>
 
             <div style={{ fontFamily: "'Playfair Display', serif", fontWeight: 700, fontSize: "1.75rem", color: B.offwhite, lineHeight: 1.1 }}>
-              Nome do CEO
+              Magá
             </div>
             <div className="mt-1 mb-5 text-sm" style={{ color: B.orange }}>CEO & Fundador · Atlântica Consultoria Internacional</div>
 
             <div className="w-10 h-px mb-5" style={{ background: `linear-gradient(90deg, ${B.orange}, transparent)` }} />
 
             <p className="text-sm leading-relaxed mb-6" style={{ color: B.silver }}>
-              Breve biografia ou mensagem do CEO. Visão, missão e os valores que guiam a Atlântica Consultoria Internacional no mercado global.
-            </p>
+              Magá, nossa mascote e CEO, está presente na Atlântica, desde sua fundação, em 2015. Seu nome vem de Magalhães, uma estrela da constelação do Cruzeiro do Sul, símbolo que representa seu papel de guiar e conectar a Atlântica ao mundo.            </p>
 
             <div className="flex flex-wrap gap-4 text-sm">
               {[
@@ -577,44 +538,41 @@ function CeoCard() {
 
 const DIRETORIAS = [
   {
+    name: "Presidência",
+    heading: "Presidência",
+    acento: B.orange,
+    director: { name: "Yasmim Teixeira", role: "Presidente", initials: "YT", badge: "Pres.", grad: [B.orange, B.orangeLt] },
+  },
+  {
+    name: "Vice-Presidência",
+    heading: "Vice-Presidência",
+    acento: "#a855f7",
+    director: { name: "Donato Mörschbächer", role: "Vice-presidente", initials: "DM", badge: "Vice", grad: ["#a855f7", "#d8b4fe"] },
+  },
+  {
     name: "Administrativo-Financeiro",
     acento: "#4A90D9",
-    director: { name: "Dra. Isabela Fonseca", role: "Diretora Administrativo-Financeira", initials: "IF", grad: ["#4A90D9", "#7CB9F0"] },
-    staff: [
-      { name: "Lucas Tavares", role: "Analista Administrativo-Financeiro", initials: "LT", grad: ["#4A90D9", "#7CB9F0"] },
-    ],
-  },
-  {
-    name: "Marketing",
-    acento: B.orange,
-    director: { name: "Carlos Drummond Jr.", role: "Diretor de Marketing", initials: "CD", grad: [B.orange, B.orangeLt] },
-    staff: [
-      { name: "Fernanda Lopes", role: "Analista de Marketing", initials: "FL", grad: [B.orange, B.orangeLt] },
-    ],
-  },
-  {
-    name: "Projetos",
-    acento: "#10b981",
-    director: { name: "Sophia Nakamura", role: "Diretora de Projetos", initials: "SN", grad: ["#10b981", "#34d399"] },
-    staff: [
-      { name: "Marcelo Freitas", role: "Analista de Projetos", initials: "MF", grad: ["#10b981", "#34d399"] },
-    ],
-  },
-  {
-    name: "Gestão",
-    acento: "#a855f7",
-    director: { name: "André Castellan", role: "Diretor de Gestão", initials: "AC", grad: ["#a855f7", "#d8b4fe"] },
-    staff: [
-      { name: "Renata Borges", role: "Analista de Gestão", initials: "RB", grad: ["#a855f7", "#d8b4fe"] },
-    ],
+    director: { name: "Luís Gustavo Brum", role: "Diretor Administrativo-Financeiro", initials: "LB", grad: ["#4A90D9", "#7CB9F0"] },
   },
   {
     name: "Comercial",
     acento: "#22c5d6",
-    director: { name: "Camila Rezende", role: "Diretora Comercial", initials: "CR", grad: ["#22c5d6", "#67e8f9"] },
-    staff: [
-      { name: "Diego Pinheiro", role: "Consultor Comercial", initials: "DP", grad: ["#22c5d6", "#67e8f9"] },
-    ],
+    director: { name: "Huesley Padilha", role: "Diretor Comercial", initials: "HP", grad: ["#22c5d6", "#67e8f9"] },
+  },
+  {
+    name: "Gestão de Pessoas",
+    acento: "#ec4899",
+    director: { name: "Miguel Vigolo", role: "Diretor de Gestão de Pessoas", initials: "MV", grad: ["#ec4899", "#f9a8d4"] },
+  },
+  {
+    name: "Marketing",
+    acento: "#f97316",
+    director: { name: "Maria Isabela Gesswein", role: "Diretora de Marketing", initials: "MG", grad: ["#f97316", "#fdba74"] },
+  },
+  {
+    name: "Projetos",
+    acento: "#10b981",
+    director: { name: "Bibiana Garcia", role: "Diretora de Projetos", initials: "BG", grad: ["#10b981", "#34d399"] },
   },
 ];
 
@@ -647,7 +605,7 @@ function PersonCard({ person, delay, acento, isDirector = false }) {
         <span
           className="ml-auto flex-shrink-0 text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded"
           style={{ background: `${acento}18`, color: acento, border: `1px solid ${acento}30` }}
-        >Dir.</span>
+        >{person.badge || "Dir."}</span>
       )}
     </div>
   );
@@ -672,29 +630,33 @@ function DiretoriaBlock({ d, index }) {
       >
         <div className="w-1.5 h-5 rounded-full flex-shrink-0" style={{ background: d.acento }} />
         <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: d.acento }}>
-          Diretoria de {d.name}
+          {d.heading || `Diretoria de ${d.name}`}
         </span>
       </div>
 
       {/* Director row */}
-      <div className="px-4 pt-4 pb-2">
+      <div className={`px-4 pt-4 ${d.staff?.length ? "pb-2" : "pb-4"}`}>
         <PersonCard person={d.director} delay={index * 60} acento={d.acento} isDirector />
       </div>
 
-      {/* Divider */}
-      <div className="mx-4 my-1" style={{ height: "1px", background: "rgba(221,229,242,0.06)" }} />
+      {d.staff?.length > 0 && (
+        <>
+          {/* Divider */}
+          <div className="mx-4 my-1" style={{ height: "1px", background: "rgba(221,229,242,0.06)" }} />
 
-      {/* Staff */}
-      <div className="px-4 pb-4 space-y-2">
-        {d.staff.slice(0, 1).map((s, si) => (
-          <PersonCard key={s.name} person={s} delay={index * 60 + (si + 1) * 50} acento={d.acento} />
-        ))}
-      </div>
+          {/* Staff */}
+          <div className="px-4 pb-4 space-y-2">
+            {d.staff.slice(0, 1).map((s, si) => (
+              <PersonCard key={s.name} person={s} delay={index * 60 + (si + 1) * 50} acento={d.acento} />
+            ))}
+          </div>
+        </>
+      )}
     </div>
   );
 }
 
-function About() {
+function About({ content }) {
   const { ref, visible } = useReveal();
   const { ref: teamRef, visible: teamVis } = useReveal();
   return (
@@ -710,41 +672,16 @@ function About() {
               Quem <span className="orange-text">Somos</span>
             </h2>
             <p className="text-sm leading-relaxed mb-4" style={{ color: B.silver }}>
-              Fundada em 2009 por advogados e banqueiros de investimento com experiência em Londres, Nova York e Hong Kong, a <strong style={{ color: B.offwhite }}>Atlântica Consultoria Internacional</strong> nasceu da percepção de que empresas e famílias brasileiras mereciam um parceiro de confiança para navegar a complexidade do cenário global.
+              Fundada em 2015, a Atlântica é uma empresa júnior vinculada ao curso de Relações Internacionais da UFRGS. Sem fins lucrativos, tem como propósito proporcionar aos seus membros uma experiência prática em comércio exterior e uma vivência empresarial. Para isso, dedicamo-nos ao desenvolvimento de projetos de internacionalização de empresas e instituições, atuando em áreas como exportação, importação, paradiplomacia e tradução, conectando o conhecimento acadêmico às demandas e oportunidades do mercado internacional.
             </p>
-            <p className="text-sm leading-relaxed mb-8" style={{ color: B.silver }}>
-              Hoje somos referência em assessoria internacional, combinando rigor técnico, rede de parceiros locais em mais de 40 países e compromisso inabalável com a confidencialidade dos nossos clientes.
-            </p>
-            <div className="flex flex-wrap gap-8">
-              {[
-                { label: "Escritórios", value: "São Paulo · Lisboa · Miami" },
-                { label: "Parcerias", value: "40+ países" },
-                { label: "Certificações", value: "ISO 27001 · OAB" },
-              ].map(item => (
-                <div key={item.label}>
-                  <div className="text-xs mb-0.5" style={{ color: B.silver }}>{item.label}</div>
-                  <div className="text-sm font-semibold" style={{ color: B.offwhite }}>{item.value}</div>
-                </div>
-              ))}
-            </div>
           </div>
 
-          <div className={`reveal-right ${visible ? "visible" : ""}`}>
-            <div className="grid grid-cols-2 gap-4">
-              {[
-                { icon: "🔐", title: "Confidencialidade", desc: "Sigilo absoluto em todas as operações e informações dos clientes." },
-                { icon: "🎯", title: "Precisão", desc: "Análises detalhadas e estratégias personalizadas para cada caso." },
-                { icon: "🌐", title: "Rede Global", desc: "Parceiros locais especializados em mais de 40 jurisdições." },
-                { icon: "⚖️", title: "Ética", desc: "Compliance rigoroso e conduta íntegra em todas as operações." },
-              ].map(v => (
-                <div key={v.title} className="p-5 rounded-xl"
-                  style={{ background: "rgba(1,17,61,0.5)", border: "1px solid rgba(221,229,242,0.08)" }}>
-                  <div className="text-2xl mb-3">{v.icon}</div>
-                  <div className="font-semibold text-sm mb-1.5" style={{ color: B.offwhite }}>{v.title}</div>
-                  <div className="text-xs leading-relaxed" style={{ color: B.silver }}>{v.desc}</div>
-                </div>
-              ))}
-            </div>
+          <div className={`reveal-right flex items-center justify-center ${visible ? "visible" : ""}`}>
+            <img
+              src={logoBranco}
+              alt="Atlântica Consultoria Internacional"
+              className="w-full max-w-lg h-auto object-contain"
+            />
           </div>
         </div>
 
@@ -765,7 +702,11 @@ function About() {
             style={{ border: "1px solid rgba(252,163,17,0.2)", boxShadow: "0 18px 50px rgba(0,0,0,0.2)" }}
           >
             <img
-              src={equipeDiretoria}
+              src={content.photo ? `/api/photo?path=${encodeURIComponent(content.photo)}` : equipeDiretoria}
+              onError={event => {
+                const fallback = new URL(equipeDiretoria, window.location.href).href;
+                if (event.currentTarget.src !== fallback) event.currentTarget.src = fallback;
+              }}
               alt="Equipe de diretoria da Atlântica Consultoria Internacional"
               className="absolute inset-0 w-full h-full object-cover imagem-diretoria"
             />
@@ -801,8 +742,8 @@ function About() {
           </div>
         </div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-5">
-          {DIRETORIAS.map((d, i) => <DiretoriaBlock key={d.name} d={d} index={i} />)}
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+          {DIRETORIAS.map((d, i) => <DiretoriaBlock key={d.name} d={{ ...d, director: { ...d.director, name: content.names[i], initials: initials(content.names[i]) } }} index={i} />)}
         </div>
       </div>
     </section>
@@ -812,7 +753,7 @@ function About() {
 /* ══════════════════════════════
    CONTACT
 ══════════════════════════════ */
-function Contact() {
+function Contact({ phone }) {
   const { ref, visible } = useReveal();
   const [form, setForm] = useState({ nome: "", email: "", telefone: "", assunto: "", mensagem: "" });
   const [sent, setSent] = useState(false);
@@ -841,10 +782,10 @@ function Contact() {
 
             <div className="space-y-5">
               {[
-                { icon: "📍", label: "Endereço", val: "Av. Brigadeiro Faria Lima, 3144 — São Paulo, SP" },
-                { icon: "📞", label: "Telefone", val: "+55 (11) 3000-0000" },
-                { icon: "✉️", label: "E-mail", val: "contato@atlantica.com.br" },
-                { icon: "🕐", label: "Horário", val: "Seg – Sex · 8h às 19h (Horário de Brasília)" },
+                { icon: "📍", label: "Endereço", val: "Avenida João Pessoa, 52, Porto Alegre, Rio Grande do Sul" },
+                { icon: "📞", label: "Telefone", val: phone },
+                { icon: "✉️", label: "E-mail", val: "Diretor Comercial · comercial@atlanticaconsultoria.com" },
+                { icon: "🕐", label: "Horário", val: "Seg – Sex · 8h às 18h" },
               ].map(item => (
                 <div key={item.label} className="flex items-start gap-3">
                   <span className="text-lg mt-0.5 flex-shrink-0">{item.icon}</span>
@@ -856,17 +797,6 @@ function Contact() {
               ))}
             </div>
 
-            <div className="mt-8 pt-8" style={{ borderTop: "1px solid rgba(221,229,242,0.08)" }}>
-              <div className="text-xs mb-3 uppercase tracking-widest" style={{ color: B.silver }}>Escritórios</div>
-              <div className="flex flex-wrap gap-2">
-                {["🇧🇷 São Paulo", "🇵🇹 Lisboa", "🇺🇸 Miami"].map(o => (
-                  <span key={o} className="text-xs px-3 py-1.5 rounded"
-                    style={{ background: "rgba(221,229,242,0.05)", border: "1px solid rgba(221,229,242,0.1)", color: B.silver }}>
-                    {o}
-                  </span>
-                ))}
-              </div>
-            </div>
           </div>
 
           {/* Form */}
@@ -913,9 +843,9 @@ function Contact() {
                     <input className="form-input w-full px-4 py-3 rounded text-sm" placeholder="+55 (11) 00000-0000" value={form.telefone} onChange={set("telefone")} />
                   </div>
                   <div>
-                    <label className="text-xs mb-1.5 block" style={{ color: B.silver }}>Assunto *</label>
-                    <select required className="form-input w-full px-4 py-3 rounded text-sm" value={form.assunto} onChange={set("assunto")}>
-                      <option value="" disabled>Selecione...</option>
+                    <label className="text-xs mb-1.5 block" style={{ color: B.silver }} for="assunto">Assunto *</label>
+                    <select required id="assunto" className="form-input w-full px-4 py-3 rounded text-sm" value={form.assunto} onChange={set("assunto")}>
+                      <option value="" disabled selected hidden>Selecione...</option>
                       <option>Exportação</option>
                       <option>Tradução</option>
                       <option>Importação</option>
@@ -960,6 +890,8 @@ function Contact() {
   );
 }
 
+
+
 /* ══════════════════════════════
    FOOTER
 ══════════════════════════════ */
@@ -993,19 +925,32 @@ function Footer() {
   );
 }
 
+
+
 /* ══════════════════════════════
    APP ROOT
 ══════════════════════════════ */
 export default function App() {
+  const [content, setContent] = useState(DEFAULT_CONTENT);
+  useEffect(() => {
+    const controller = new AbortController();
+    fetch('/api/content', { signal: controller.signal, cache: 'no-store' })
+      .then(response => { if (!response.ok) throw new Error('Conteúdo indisponível'); return response.json(); })
+      .then(data => setContent({ ...validateContent(data), photo: data.photo || null }))
+      .catch(() => { /* Mantém o conteúdo original se a API estiver indisponível. */ });
+    return () => controller.abort();
+  }, []);
   return (
     <div className="min-h-full">
       <Nav />
       <Hero />
       <Services />
       <Cases />
-      <About />
-      <Contact />
+      <About content={content} />
+      <Contact phone={content.phone} />
       <Footer />
+      <VLibras />
     </div>
   );
 }
+

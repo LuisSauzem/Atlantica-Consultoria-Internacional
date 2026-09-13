@@ -38,7 +38,11 @@ O projeto utiliza o servidor de desenvolvimento configurado pelo ambiente Figma 
 - `src/App.jsx` — componente principal e conteúdo da página em JSX.
 - `src/index.css` — estilos globais, fontes e tema visual.
 - `src/main.jsx` — ponto de entrada da aplicação.
-- `mascote.png` — recurso visual utilizado na apresentação do site.
+- `src/image/` — imagens usadas na página e arquivos originais da marca.
+- `public/diretoria-original.jpeg` — foto original compartilhada pela landing page e pela prévia administrativa.
+- `api/`, `server/` e `shared/` — leitura, gravação e validação dos conteúdos editáveis.
+- `autonomia.md` — requisitos, execução local, exemplos JSON da API e pendências.
+- `comits/` — sugestões de commits para revisão manual.
 - `.figma/make/` — scripts de apoio ao desenvolvimento no Figma Make, como iniciar, formatar, instalar dependências e analisar rotas.
 
 ## Processo seletivo
